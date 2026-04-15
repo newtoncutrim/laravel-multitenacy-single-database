@@ -39,6 +39,11 @@ Route::middleware(['auth', 'platform'])
     ->name('platform.')
     ->group(base_path('routes/platform.php'));
 
+Route::middleware(['auth', 'support'])
+    ->prefix('support')
+    ->name('support.')
+    ->group(base_path('routes/support.php'));
+
 Route::middleware(['auth', 'tenant'])
     ->prefix('app')
     ->name('clinic.')

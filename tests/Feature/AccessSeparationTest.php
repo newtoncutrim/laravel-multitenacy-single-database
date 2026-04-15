@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,16 +14,35 @@ class AccessSeparationTest extends TestCase
 
     public function test_platform_user_can_access_platform_area_only(): void
     {
-        $user = User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@example.com',
-            'password' => 'password',
-        ]);
+        $user = $this->createPlatformUser(User::ROLE_SUPER_ADMIN);
 
         $this->actingAs($user)
             ->get('/platform/dashboard')
             ->assertOk()
             ->assertSee('Painel administrativo SaaS');
+
+        $this->actingAs($user)
+            ->get('/support/dashboard')
+            ->assertOk()
+            ->assertSee('Painel de atendimento aos clientes');
+
+        $this->actingAs($user)
+            ->get('/app/dashboard')
+            ->assertForbidden();
+    }
+
+    public function test_support_user_can_access_support_area_but_not_platform_admin_area(): void
+    {
+        $user = $this->createPlatformUser(User::ROLE_SUPPORT, 'suporte@example.com');
+
+        $this->actingAs($user)
+            ->get('/support/dashboard')
+            ->assertOk()
+            ->assertSee('Painel de atendimento aos clientes');
+
+        $this->actingAs($user)
+            ->get('/platform/dashboard')
+            ->assertForbidden();
 
         $this->actingAs($user)
             ->get('/app/dashboard')
@@ -51,15 +71,17 @@ class AccessSeparationTest extends TestCase
 
     public function test_dashboard_redirects_to_the_authenticated_user_area(): void
     {
-        $platformUser = User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@example.com',
-            'password' => 'password',
-        ]);
+        $platformUser = $this->createPlatformUser(User::ROLE_SUPER_ADMIN);
 
         $this->actingAs($platformUser)
             ->get('/dashboard')
             ->assertRedirect('/platform/dashboard');
+
+        $supportUser = $this->createPlatformUser(User::ROLE_SUPPORT, 'suporte@example.com');
+
+        $this->actingAs($supportUser)
+            ->get('/dashboard')
+            ->assertRedirect('/support/dashboard');
 
         $tenant = Tenant::create(['name' => 'Clinica Central']);
         $tenantUser = User::create([
@@ -72,5 +94,25 @@ class AccessSeparationTest extends TestCase
         $this->actingAs($tenantUser)
             ->get('/dashboard')
             ->assertRedirect('/app/dashboard');
+    }
+
+    private function createPlatformUser(string $roleSlug, string $email = 'admin@example.com'): User
+    {
+        $role = Role::create([
+            'name' => $roleSlug,
+            'slug' => $roleSlug,
+            'scope' => 'platform',
+            'is_system' => true,
+        ]);
+
+        $user = User::create([
+            'name' => 'Platform User',
+            'email' => $email,
+            'password' => 'password',
+        ]);
+
+        $user->roles()->attach($role);
+
+        return $user;
     }
 }

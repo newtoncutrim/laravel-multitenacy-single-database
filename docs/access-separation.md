@@ -7,6 +7,7 @@ Este documento define a separacao entre a administracao da plataforma SaaS, o pa
 O sistema possui tres publicos diferentes:
 
 - Plataforma: administradores do SaaS, ou seja, a empresa dona do produto.
+- Suporte: equipe interna que ajuda clinicas sem acessar a administracao principal.
 - Clinica: clientes que alugam o sistema e usam o painel para operar a clinica.
 - Cliente final: tutores/responsaveis pelos pets atendidos pela clinica.
 
@@ -26,6 +27,39 @@ Regras:
 - Administra tenants, planos, assinaturas, usuarios, suporte e auditoria.
 
 Exemplos de papeis futuros:
+
+- `super-admin`
+- `platform-admin`
+
+### Support User
+
+Usuario interno de suporte.
+
+Regras:
+
+- Fica na tabela `users`.
+- Possui `tenant_id = null`.
+- Possui role `support`.
+- Acessa o painel `/support`.
+- Nao acessa o painel principal `/platform`.
+- Serve para consultar contexto e ajudar clinicas, sem administrar planos, assinaturas ou configuracoes globais sensiveis.
+
+Permissoes esperadas:
+
+- consultar clinicas;
+- consultar usuarios de clinicas;
+- consultar contexto operacional para atendimento;
+- consultar logs/auditoria operacional quando essa tela existir.
+
+Restricoes:
+
+- nao gerencia planos;
+- nao gerencia assinaturas;
+- nao cria ou remove tenants;
+- nao gerencia superusuarios;
+- nao altera configuracoes criticas da plataforma.
+
+Exemplos de papeis de plataforma:
 
 - `super-admin`
 - `platform-admin`
@@ -155,6 +189,35 @@ Controller inicial:
 App\Http\Controllers\Clinic\DashboardController
 ```
 
+### `/support`
+
+Painel da equipe interna de suporte.
+
+Rotas atuais:
+
+```txt
+/support/dashboard
+```
+
+Arquivo de rotas:
+
+```txt
+routes/support.php
+```
+
+Middleware:
+
+```txt
+auth
+support
+```
+
+Controller inicial:
+
+```txt
+App\Http\Controllers\Support\DashboardController
+```
+
 ### `/portal`
 
 Base do portal do tutor/cliente final.
@@ -189,6 +252,7 @@ Ela redireciona o usuario autenticado para a area correta:
 
 ```txt
 Platform User -> /platform/dashboard
+Support User  -> /support/dashboard
 Tenant User   -> /app/dashboard
 ```
 
@@ -284,6 +348,24 @@ Permite acesso apenas quando:
 $user->tenant_id !== null
 ```
 
+### `support`
+
+Classe:
+
+```txt
+App\Http\Middleware\EnsureSupportUser
+```
+
+Permite acesso quando o usuario e:
+
+```txt
+super-admin
+platform-admin
+support
+```
+
+Ou seja, administradores da plataforma tambem podem abrir a area de suporte, mas usuarios `support` nao podem abrir a area `/platform`.
+
 ### `client.portal`
 
 Classe:
@@ -366,6 +448,10 @@ Defina no `.env`:
 SUPER_ADMIN_NAME="Seu Nome"
 SUPER_ADMIN_EMAIL="voce@example.com"
 SUPER_ADMIN_PASSWORD="senha-segura"
+
+SUPPORT_USER_NAME="Suporte"
+SUPPORT_USER_EMAIL="suporte@example.com"
+SUPPORT_USER_PASSWORD="senha-segura"
 ```
 
 Depois rode:
@@ -380,10 +466,16 @@ O usuario sera criado com:
 tenant_id = null
 ```
 
-Por isso ele acessa:
+O superusuario recebe role `super-admin` e acessa:
 
 ```txt
 /platform/dashboard
+```
+
+O usuario de suporte recebe role `support` e acessa:
+
+```txt
+/support/dashboard
 ```
 
 ## Proximo Passo Recomendado
@@ -416,3 +508,11 @@ Depois:
 - Criar middleware real para `client.portal`.
 - Criar rotas como `/portal/pets`, `/portal/appointments` e `/portal/documents`.
 - Garantir que todo acesso consulte apenas registros do `client_id` autenticado.
+
+## Guia De Cadastro E Uso
+
+Para instrucoes operacionais de como cadastrar e usar cada tipo de conta, consulte:
+
+```txt
+docs/user-onboarding-and-areas.md
+```

@@ -2,9 +2,10 @@
 
 Sistema SaaS multi-tenant para gestao veterinaria, usando Laravel 10, MySQL, Redis, Docker e arquitetura single database com isolamento por `tenant_id`.
 
-O projeto esta sendo estruturado para atender tres areas:
+O projeto esta sendo estruturado para atender quatro areas:
 
 - Plataforma SaaS: painel usado pelo dono do sistema para administrar clinicas, planos, assinaturas e suporte.
+- Suporte: painel usado pela equipe interna para ajudar clinicas sem acessar a administracao principal.
 - Painel da clinica: painel usado pela clinica que aluga o sistema para gerenciar clientes, pets, agenda, prontuarios, estoque e financeiro.
 - Portal do cliente final: area planejada para tutores/responsaveis acompanharem pets, agendamentos e documentos.
 
@@ -131,6 +132,10 @@ Para criar o primeiro superusuario, defina no `.env`:
 SUPER_ADMIN_NAME="Seu Nome"
 SUPER_ADMIN_EMAIL="voce@example.com"
 SUPER_ADMIN_PASSWORD="senha-segura"
+
+SUPPORT_USER_NAME="Suporte"
+SUPPORT_USER_EMAIL="suporte@example.com"
+SUPPORT_USER_PASSWORD="senha-segura"
 ```
 
 Depois rode:
@@ -149,6 +154,12 @@ Esse usuario acessa:
 
 ```txt
 /platform/dashboard
+```
+
+O usuario de suporte acessa:
+
+```txt
+/support/dashboard
 ```
 
 ## Areas Do Sistema
@@ -217,6 +228,44 @@ Regra:
 
 ```txt
 users.tenant_id preenchido
+```
+
+### Painel De Suporte
+
+Area usada pela equipe interna de suporte.
+
+```txt
+/support
+/support/dashboard
+```
+
+Responsabilidades:
+
+- consultar contexto de clinicas;
+- entender problemas reportados por clientes;
+- apoiar atendimento e investigacao;
+- acessar indicadores operacionais basicos.
+
+Restricoes:
+
+- nao acessa `/platform`;
+- nao administra planos;
+- nao administra assinaturas;
+- nao cria ou remove tenants;
+- nao gerencia superusuarios.
+
+Middleware:
+
+```txt
+auth
+support
+```
+
+Regra:
+
+```txt
+users.tenant_id = null
+role = support
 ```
 
 ### Portal Do Cliente Final
@@ -320,6 +369,10 @@ Resumo:
 Platform User
   administra o SaaS
   acessa /platform
+
+Support User
+  ajuda clientes sem acessar a administracao principal
+  acessa /support
 
 Tenant
   representa a clinica que aluga o sistema
@@ -432,6 +485,7 @@ Areas web:
 
 ```txt
 app/Http/Controllers/Platform
+app/Http/Controllers/Support
 app/Http/Controllers/Clinic
 app/Http/Controllers/Portal
 ```
@@ -440,6 +494,7 @@ Views:
 
 ```txt
 resources/views/platform
+resources/views/support
 resources/views/clinic
 resources/views/portal
 ```
@@ -451,6 +506,7 @@ Rotas web:
 ```txt
 routes/web.php
 routes/platform.php
+routes/support.php
 routes/clinic.php
 routes/portal.php
 ```
@@ -519,6 +575,7 @@ make ci
 ## Documentacao Complementar
 
 - [`docs/access-separation.md`](docs/access-separation.md): separacao entre plataforma, clinica e portal.
+- [`docs/user-onboarding-and-areas.md`](docs/user-onboarding-and-areas.md): como cadastrar e usar superadmin, suporte, clinica e cliente final.
 - [`docs/architecture-veterinary-saas.md`](docs/architecture-veterinary-saas.md): arquitetura modular do SaaS veterinario.
 
 ## Fluxo Recomendado Para Desenvolvimento

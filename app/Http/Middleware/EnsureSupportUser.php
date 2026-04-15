@@ -6,12 +6,12 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsurePlatformUser
+class EnsureSupportUser
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user()?->isPlatformAdmin()) {
-            abort(Response::HTTP_FORBIDDEN, 'Acesso restrito aos administradores da plataforma.');
+        if (! $request->user()?->isPlatformAdmin() && ! $request->user()?->isSupportUser()) {
+            abort(Response::HTTP_FORBIDDEN, 'Acesso restrito aos usuarios de suporte.');
         }
 
         return $next($request);

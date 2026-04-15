@@ -12,6 +12,12 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public const ROLE_SUPER_ADMIN = 'super-admin';
+
+    public const ROLE_PLATFORM_ADMIN = 'platform-admin';
+
+    public const ROLE_SUPPORT = 'support';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -74,6 +80,13 @@ class User extends Authenticatable
             ->exists();
     }
 
+    public function hasAnyRole(array $roles): bool
+    {
+        return $this->roles()
+            ->whereIn('slug', $roles)
+            ->exists();
+    }
+
     public function isPlatformUser(): bool
     {
         return $this->tenant_id === null;
@@ -84,11 +97,32 @@ class User extends Authenticatable
         return $this->tenant_id !== null;
     }
 
-    public function homeRoute(): string
+    public function isPlatformAdmin(): bool
     {
         return $this->isPlatformUser()
-            ? 'platform.dashboard'
-            : 'clinic.dashboard';
+            && $this->hasAnyRole([
+                self::ROLE_SUPER_ADMIN,
+                self::ROLE_PLATFORM_ADMIN,
+            ]);
+    }
+
+    public function isSupportUser(): bool
+    {
+        return $this->isPlatformUser()
+            && $this->hasRole(self::ROLE_SUPPORT);
+    }
+
+    public function homeRoute(): string
+    {
+        if ($this->isPlatformAdmin()) {
+            return 'platform.dashboard';
+        }
+
+        if ($this->isSupportUser()) {
+            return 'support.dashboard';
+        }
+
+        return 'clinic.dashboard';
     }
 
     public function posts()
