@@ -2,13 +2,14 @@ COMPOSE ?= docker compose
 APP_SERVICE ?= app
 DB_SERVICE ?= db
 NODE ?= npm
+FRONTEND_DIR ?= frontend
 
 APP_EXEC = $(COMPOSE) exec -T $(APP_SERVICE)
 DB_EXEC = $(COMPOSE) exec -T $(DB_SERVICE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format assets ci route-list observability-up observability-down db-shell
+.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format assets frontend-install frontend-dev frontend-build frontend-lint backend-assets ci route-list observability-up observability-down db-shell
 
 help: ## Lista os comandos disponiveis.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nComandos disponiveis:\n"} /^[a-zA-Z0-9_-]+:.*##/ {printf "  make %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -90,7 +91,25 @@ quality: ## Valida Composer e estilo PHP com Pint.
 format: ## Corrige estilo PHP com Pint.
 	$(APP_EXEC) ./vendor/bin/pint app config database routes tests
 
-assets: ## Instala dependencias JS e builda assets do Vite usando Node local.
+assets: frontend-build ## Alias para buildar o frontend separado.
+
+frontend-install: ## Instala dependencias do frontend React.
+	@if [ -f $(FRONTEND_DIR)/package-lock.json ]; then \
+		cd $(FRONTEND_DIR) && $(NODE) ci; \
+	else \
+		cd $(FRONTEND_DIR) && $(NODE) install; \
+	fi
+
+frontend-dev: ## Sobe apenas o servico frontend do Docker.
+	$(COMPOSE) up -d frontend
+
+frontend-build: frontend-install ## Builda o frontend React.
+	cd $(FRONTEND_DIR) && $(NODE) run build
+
+frontend-lint: frontend-install ## Valida tipos do frontend React.
+	cd $(FRONTEND_DIR) && $(NODE) run lint
+
+backend-assets: ## Builda os assets legados do Laravel na raiz, se usados.
 	@if [ -f package-lock.json ]; then \
 		$(NODE) ci; \
 	else \
@@ -98,7 +117,7 @@ assets: ## Instala dependencias JS e builda assets do Vite usando Node local.
 	fi
 	$(NODE) run build
 
-ci: quality test assets ## Roda qualidade, testes e build de assets.
+ci: quality test frontend-lint frontend-build ## Roda qualidade, testes e build do frontend.
 
 route-list: ## Lista rotas da aplicacao.
 	$(APP_EXEC) php artisan route:list

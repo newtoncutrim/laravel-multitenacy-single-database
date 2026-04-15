@@ -17,6 +17,7 @@ O projeto esta sendo estruturado para atender quatro areas:
 - Node.js e npm para build dos assets front-end
 
 O PHP e o Composer rodam dentro do container `app`.
+O frontend React separado fica em `frontend/`.
 
 ## Como Rodar O Projeto
 
@@ -41,7 +42,8 @@ Esse comando:
 Depois acesse:
 
 ```txt
-http://localhost:8989
+Backend Laravel: http://localhost:8989
+Frontend React:  http://localhost:5173
 ```
 
 ### Comandos principais
@@ -56,6 +58,7 @@ make restart     # reinicia os containers
 make logs        # acompanha logs
 make shell       # abre shell no container app
 make db-shell    # abre shell MySQL
+make frontend-dev # sobe o servico frontend
 ```
 
 ### Banco, migrations e seeds
@@ -87,10 +90,19 @@ make test-filter FILTER=AccessSeparationTest
 make assets
 ```
 
-Esse comando instala dependencias JS e roda:
+Esse comando instala dependencias JS em `frontend/` e roda:
 
 ```bash
 npm run build
+```
+
+Comandos especificos do frontend:
+
+```bash
+make frontend-install
+make frontend-dev
+make frontend-lint
+make frontend-build
 ```
 
 ## Servicos Docker
@@ -98,6 +110,7 @@ npm run build
 Servicos principais:
 
 - Aplicacao: `http://localhost:8989`
+- Frontend React: `http://localhost:5173`
 - MySQL: porta `3306`
 - RabbitMQ Management: `http://localhost:15672` (`laravel` / `secret`)
 - Redis: usado por filas/cache conforme configuracao
@@ -347,6 +360,55 @@ tenant
 
 Essa API ainda e apenas um marcador da area do portal.
 
+## Frontend React
+
+O frontend separado fica em:
+
+```txt
+frontend/
+```
+
+Tecnologias:
+
+```txt
+React
+TypeScript
+Vite
+```
+
+Arquivo de configuracao local:
+
+```txt
+frontend/.env.example
+```
+
+Variavel principal:
+
+```env
+VITE_API_BASE_URL=http://localhost:8989
+```
+
+O cliente HTTP fica em:
+
+```txt
+frontend/src/services/api.ts
+```
+
+Ele usa Laravel Sanctum com cookies:
+
+```txt
+GET /sanctum/csrf-cookie
+POST /api/auth/login
+GET /api/auth/me
+POST /api/auth/logout
+```
+
+Contrato detalhado entre frontend e backend:
+
+```txt
+docs/frontend-api-contract.md
+```
+
 ## Modelo De Acesso
 
 O sistema usa a tabela `users` para dois tipos de usuarios administrativos:
@@ -576,6 +638,7 @@ make ci
 
 - [`docs/access-separation.md`](docs/access-separation.md): separacao entre plataforma, clinica e portal.
 - [`docs/user-onboarding-and-areas.md`](docs/user-onboarding-and-areas.md): como cadastrar e usar superadmin, suporte, clinica e cliente final.
+- [`docs/frontend-api-contract.md`](docs/frontend-api-contract.md): como o frontend autentica e chama APIs por tipo de usuario.
 - [`docs/architecture-veterinary-saas.md`](docs/architecture-veterinary-saas.md): arquitetura modular do SaaS veterinario.
 
 ## Fluxo Recomendado Para Desenvolvimento

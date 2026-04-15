@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\V1\AppointmentController;
 use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\BranchController;
@@ -44,8 +45,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/auth/login', [AuthController::class, 'login'])->name('api.auth.login');
+Route::post('/auth/register', [AuthController::class, 'register'])->name('api.auth.register');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/auth/me', [AuthController::class, 'me'])->name('api.auth.me');
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('api.auth.logout');
 });
 
 Route::middleware(['auth:sanctum', 'platform'])

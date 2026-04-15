@@ -34,8 +34,9 @@ jobs:
         with:
           composer-options: --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Install Node dependencies
+      - name: Install frontend dependencies
         run: |
+          cd frontend
           if [ -f package-lock.json ]; then
             npm ci
           else
@@ -47,8 +48,8 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Build frontend assets
-        run: npm run build
+      - name: Build frontend
+        run: cd frontend && npm run build
 
       - name: Validate Laravel bootstrap
         run: php artisan config:cache
@@ -135,3 +136,20 @@ jobs:
 
       - name: Check PHP code style
         run: ./vendor/bin/pint --test app config database routes tests
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Check frontend types
+        run: cd frontend && npm run lint
