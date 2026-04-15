@@ -7,6 +7,32 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Ambiente Docker
+
+Subir a aplicacao com MySQL, Redis, worker de fila e RabbitMQ:
+
+```bash
+docker compose up -d
+```
+
+Subir tambem as ferramentas de observabilidade:
+
+```bash
+docker compose --profile observability up -d
+```
+
+Servicos disponiveis:
+
+- Aplicacao: http://localhost:8989
+- RabbitMQ Management: http://localhost:15672 (`laravel` / `secret`)
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000 (`admin` / `admin`)
+- Loki: http://localhost:3100
+- Alloy: http://localhost:12345
+- cAdvisor: http://localhost:8080
+
+O worker Laravel continua usando Redis por padrao (`QUEUE_CONNECTION=redis`). O RabbitMQ ja fica disponivel no Docker para mensageria, mas para usar jobs Laravel diretamente nele ainda e necessario instalar e configurar um driver AMQP no projeto.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
