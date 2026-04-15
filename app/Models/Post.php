@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
-use App\Scope\Tenat\TenatScope;
-use App\Tenat\Traits\TenatTrait;
-use App\TenatObserver\TenatObserver;
+use App\Tenant\Traits\TenantTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
     use HasFactory;
-    use TenatTrait;
+    use TenantTrait;
 
-    protected $fillable = ['user_id', 'title', 'content'];
+    protected $fillable = ['tenant_id', 'user_id', 'title', 'content'];
 
-    public function tenat()
+    public function tenant()
     {
-        return $this->belongsTo(Tenat::class, 'tenat_id');
+        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 
     public function user()

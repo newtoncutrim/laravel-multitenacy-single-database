@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tenat;
-use App\Models\User;
+use App\Models\Tenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,19 +44,18 @@ class AuthController extends Controller
     public function register(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'tenant_name' => ['required', 'string', 'max:255', 'unique:tenats,name'],
+            'tenant_name' => ['required', 'string', 'max:255', 'unique:tenants,name'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
         $user = DB::transaction(function () use ($data) {
-            $tenat = Tenat::create([
+            $tenant = Tenant::create([
                 'name' => $data['tenant_name'],
             ]);
 
-            return $tenat->users()->create([
-                'tenat_id' => $tenat->id,
+            return $tenant->users()->create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),

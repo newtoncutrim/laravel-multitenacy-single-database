@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\TesteController;
 use Illuminate\Support\Facades\Route;
 
 /*

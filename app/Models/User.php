@@ -18,7 +18,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'tenat_id',
+        'tenant_id',
+        'branch_id',
         'name',
         'email',
         'password',
@@ -44,13 +45,40 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function tenat()
+    public function tenant()
     {
-        return $this->belongsTo(Tenat::class, 'tenat_id');
+        return $this->belongsTo(Tenant::class, 'tenant_id');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasPermissionTo(string $permission): bool
+    {
+        return $this->roles()
+            ->whereHas('permissions', fn ($query) => $query->where('slug', $permission))
+            ->exists();
     }
 
     public function posts()
     {
         return $this->hasMany(Post::class, 'user_id');
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class);
     }
 }

@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
-use App\Models\Tenat;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -24,7 +24,7 @@ class PostTest extends TestCase
             ->assertRedirect('/posts');
 
         $this->assertDatabaseHas('posts', [
-            'tenat_id' => $user->tenat_id,
+            'tenant_id' => $user->tenant_id,
             'user_id' => $user->id,
             'title' => 'Primeiro post',
         ]);
@@ -36,14 +36,14 @@ class PostTest extends TestCase
         $otherUser = $this->createUser('Outra Empresa', 'outra@example.com');
 
         Post::create([
-            'tenat_id' => $user->tenat_id,
+            'tenant_id' => $user->tenant_id,
             'user_id' => $user->id,
             'title' => 'Post visivel',
             'content' => 'Este aparece.',
         ]);
 
         Post::create([
-            'tenat_id' => $otherUser->tenat_id,
+            'tenant_id' => $otherUser->tenant_id,
             'user_id' => $otherUser->id,
             'title' => 'Post escondido',
             'content' => 'Este nao aparece.',
@@ -60,7 +60,7 @@ class PostTest extends TestCase
     {
         $user = $this->createUser();
         $post = Post::create([
-            'tenat_id' => $user->tenat_id,
+            'tenant_id' => $user->tenant_id,
             'user_id' => $user->id,
             'title' => 'Post para apagar',
             'content' => 'Conteudo.',
@@ -77,10 +77,10 @@ class PostTest extends TestCase
 
     private function createUser(string $tenantName = 'Acme', string $email = 'ana@example.com'): User
     {
-        $tenat = Tenat::create(['name' => $tenantName]);
+        $tenant = Tenant::create(['name' => $tenantName]);
 
         return User::create([
-            'tenat_id' => $tenat->id,
+            'tenant_id' => $tenant->id,
             'name' => 'Ana Silva',
             'email' => $email,
             'password' => 'password',

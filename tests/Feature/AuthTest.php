@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Tenat;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -35,15 +35,15 @@ class AuthTest extends TestCase
 
         $response->assertRedirect('/dashboard');
         $this->assertAuthenticated();
-        $this->assertDatabaseHas('tenats', ['name' => 'Acme']);
+        $this->assertDatabaseHas('tenants', ['name' => 'Acme']);
         $this->assertDatabaseHas('users', ['email' => 'ana@example.com']);
     }
 
     public function test_user_can_login_and_logout(): void
     {
-        $tenat = Tenat::create(['name' => 'Acme']);
+        $tenant = Tenant::create(['name' => 'Acme']);
         $user = User::create([
-            'tenat_id' => $tenat->id,
+            'tenant_id' => $tenant->id,
             'name' => 'Ana Silva',
             'email' => 'ana@example.com',
             'password' => Hash::make('password'),

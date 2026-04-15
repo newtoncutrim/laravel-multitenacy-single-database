@@ -5,7 +5,7 @@
         <p class="eyebrow">Painel</p>
         <h1>Ola, {{ auth()->user()->name }}</h1>
         <p class="description">
-            Empresa: {{ auth()->user()->tenat?->name ?? 'Sem empresa vinculada' }}
+            Empresa: {{ auth()->user()->tenant?->name ?? 'Sem empresa vinculada' }}
         </p>
     </div>
 

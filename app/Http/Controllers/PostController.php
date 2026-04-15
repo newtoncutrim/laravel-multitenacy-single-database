@@ -77,7 +77,7 @@ class PostController extends Controller
      */
     public function destroy(Request $request, Post $post): RedirectResponse
     {
-        abort_unless($post->tenat_id === $request->user()->tenat_id, 404);
+        abort_unless($post->tenant_id === $request->user()->tenant_id, 404);
 
         $post->delete();
 

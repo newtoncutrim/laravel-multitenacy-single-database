@@ -11,7 +11,7 @@
     <div class="header">
         <p class="eyebrow">Posts</p>
         <h1>Meus posts</h1>
-        <p class="description">Crie um post simples para a empresa {{ auth()->user()->tenat?->name }}.</p>
+        <p class="description">Crie um post simples para a empresa {{ auth()->user()->tenant?->name }}.</p>
     </div>
 
     @if (session('status'))
