@@ -67,6 +67,30 @@ class User extends Authenticatable
             ->exists();
     }
 
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()
+            ->where('slug', $role)
+            ->exists();
+    }
+
+    public function isPlatformUser(): bool
+    {
+        return $this->tenant_id === null;
+    }
+
+    public function isTenantUser(): bool
+    {
+        return $this->tenant_id !== null;
+    }
+
+    public function homeRoute(): string
+    {
+        return $this->isPlatformUser()
+            ? 'platform.dashboard'
+            : 'clinic.dashboard';
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class, 'user_id');

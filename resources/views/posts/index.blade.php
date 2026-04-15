@@ -1,6 +1,6 @@
 <x-layouts.auth title="Posts" wide>
     <div class="actions">
-        <a class="top-link" href="{{ route('dashboard') }}">Painel</a>
+        <a class="top-link" href="{{ route('clinic.dashboard') }}">Painel da clinica</a>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
@@ -18,7 +18,7 @@
         <p class="status">{{ session('status') }}</p>
     @endif
 
-    <form method="POST" action="{{ route('posts.store') }}">
+    <form method="POST" action="{{ route('clinic.posts.store') }}">
         @csrf
 
         <div class="field">
@@ -52,7 +52,7 @@
                         Criado em {{ $post->created_at->format('d/m/Y H:i') }}
                     </div>
 
-                    <form method="POST" action="{{ route('posts.destroy', $post) }}" style="margin-top: 12px;">
+                    <form method="POST" action="{{ route('clinic.posts.destroy', $post) }}" style="margin-top: 12px;">
                         @csrf
                         @method('DELETE')
                         <button class="button-secondary" type="submit">Apagar</button>

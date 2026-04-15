@@ -17,11 +17,11 @@ class PostTest extends TestCase
         $user = $this->createUser();
 
         $this->actingAs($user)
-            ->post('/posts', [
+            ->post('/app/posts', [
                 'title' => 'Primeiro post',
                 'content' => 'Conteudo do primeiro post.',
             ])
-            ->assertRedirect('/posts');
+            ->assertRedirect('/app/posts');
 
         $this->assertDatabaseHas('posts', [
             'tenant_id' => $user->tenant_id,
@@ -50,7 +50,7 @@ class PostTest extends TestCase
         ]);
 
         $this->actingAs($user)
-            ->get('/posts')
+            ->get('/app/posts')
             ->assertOk()
             ->assertSee('Post visivel')
             ->assertDontSee('Post escondido');
@@ -67,8 +67,8 @@ class PostTest extends TestCase
         ]);
 
         $this->actingAs($user)
-            ->delete("/posts/{$post->id}")
-            ->assertRedirect('/posts');
+            ->delete("/app/posts/{$post->id}")
+            ->assertRedirect('/app/posts');
 
         $this->assertDatabaseMissing('posts', [
             'id' => $post->id,

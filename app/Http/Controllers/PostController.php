@@ -24,7 +24,7 @@ class PostController extends Controller
      */
     public function create(): RedirectResponse
     {
-        return redirect()->route('posts.index');
+        return redirect()->route('clinic.posts.index');
     }
 
     /**
@@ -44,7 +44,7 @@ class PostController extends Controller
         ]);
 
         return redirect()
-            ->route('posts.index')
+            ->route('clinic.posts.index')
             ->with('status', 'Post criado com sucesso.');
     }
 
@@ -53,7 +53,7 @@ class PostController extends Controller
      */
     public function show(string $id): RedirectResponse
     {
-        return redirect()->route('posts.index');
+        return redirect()->route('clinic.posts.index');
     }
 
     /**
@@ -61,7 +61,7 @@ class PostController extends Controller
      */
     public function edit(string $id): RedirectResponse
     {
-        return redirect()->route('posts.index');
+        return redirect()->route('clinic.posts.index');
     }
 
     /**
@@ -69,7 +69,7 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        return redirect()->route('posts.index');
+        return redirect()->route('clinic.posts.index');
     }
 
     /**
@@ -82,7 +82,7 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()
-            ->route('posts.index')
+            ->route('clinic.posts.index')
             ->with('status', 'Post apagado.');
     }
 }

@@ -35,6 +35,7 @@ Decisao arquitetural:
 - Evoluir por modulos, sem mover tudo de uma vez.
 - Manter `tenant_id` em todos os dados operacionais da clinica.
 - Separar dados da plataforma SaaS dos dados financeiros da clinica.
+- Separar os paineis em `/platform`, `/app` e `/portal`, conforme detalhado em `docs/access-separation.md`.
 
 ## 2. Arquitetura Modular
 

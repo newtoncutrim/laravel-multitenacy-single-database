@@ -48,13 +48,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')
-    ->prefix('v1')
-    ->name('api.v1.')
+Route::middleware(['auth:sanctum', 'platform'])
+    ->prefix('platform/v1')
+    ->name('api.platform.v1.')
+    ->group(function () {
+        Route::apiResources([
+            'audit-logs' => AuditLogController::class,
+            'integrations' => IntegrationController::class,
+            'permissions' => PermissionController::class,
+            'roles' => RoleController::class,
+            'subscription-plans' => SubscriptionPlanController::class,
+            'tenant-subscriptions' => TenantSubscriptionController::class,
+            'tenants' => TenantController::class,
+            'users' => UserController::class,
+        ]);
+    });
+
+Route::middleware(['auth:sanctum', 'tenant'])
+    ->prefix('clinic/v1')
+    ->name('api.clinic.v1.')
     ->group(function () {
         Route::apiResources([
             'appointments' => AppointmentController::class,
-            'audit-logs' => AuditLogController::class,
             'branches' => BranchController::class,
             'brands' => BrandController::class,
             'clients' => ClientController::class,
@@ -63,25 +78,27 @@ Route::middleware('auth:sanctum')
             'financial-accounts' => FinancialAccountController::class,
             'financial-transactions' => FinancialTransactionController::class,
             'hospitalizations' => HospitalizationController::class,
-            'integrations' => IntegrationController::class,
             'inventory-locations' => InventoryLocationController::class,
             'inventory-movements' => InventoryMovementController::class,
             'medical-record-entries' => MedicalRecordEntryController::class,
             'medical-records' => MedicalRecordController::class,
-            'permissions' => PermissionController::class,
             'pet-vaccines' => PetVaccineController::class,
             'pets' => PetController::class,
             'posts' => PostController::class,
             'price-table-items' => PriceTableItemController::class,
             'price-tables' => PriceTableController::class,
             'products' => ProductController::class,
-            'roles' => RoleController::class,
             'services' => ServiceController::class,
-            'subscription-plans' => SubscriptionPlanController::class,
             'suppliers' => SupplierController::class,
-            'tenant-subscriptions' => TenantSubscriptionController::class,
-            'tenants' => TenantController::class,
-            'users' => UserController::class,
             'vaccines' => VaccineController::class,
         ]);
+    });
+
+Route::prefix('portal/v1')
+    ->name('api.portal.v1.')
+    ->group(function () {
+        Route::get('/status', fn () => [
+            'status' => 'planned',
+            'message' => 'Portal do cliente final separado do painel administrativo.',
+        ])->name('status');
     });

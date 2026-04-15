@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,13 +27,23 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return redirect()->route(auth()->user()->homeRoute());
     })->name('dashboard');
 
     Route::redirect('/home', '/dashboard')->name('home');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::resource('posts', PostController::class);
-});
+Route::middleware(['auth', 'platform'])
+    ->prefix('platform')
+    ->name('platform.')
+    ->group(base_path('routes/platform.php'));
+
+Route::middleware(['auth', 'tenant'])
+    ->prefix('app')
+    ->name('clinic.')
+    ->group(base_path('routes/clinic.php'));
+
+Route::prefix('portal')
+    ->name('portal.')
+    ->group(base_path('routes/portal.php'));

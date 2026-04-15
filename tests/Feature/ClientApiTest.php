@@ -19,7 +19,7 @@ class ClientApiTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $this->postJson('/api/v1/clients', [
+        $this->postJson('/api/clinic/v1/clients', [
             'name' => 'Maria Oliveira',
             'phone' => '(11) 99999-9999',
         ])
@@ -48,7 +48,7 @@ class ClientApiTest extends TestCase
             'name' => 'Cliente visivel',
         ]);
 
-        $this->getJson('/api/v1/clients')
+        $this->getJson('/api/clinic/v1/clients')
             ->assertOk()
             ->assertSee('Cliente visivel')
             ->assertDontSee('Cliente escondido');
