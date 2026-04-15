@@ -134,8 +134,19 @@ jobs:
       - name: Validate Composer files
         run: composer validate --strict --no-check-publish
 
+      - name: Audit Composer dependencies
+        run: composer audit --no-interaction
+
       - name: Check PHP code style
         run: ./vendor/bin/pint --test app config database routes tests
+
+      - name: Run static analysis
+        run: |
+          mkdir -p storage/framework/phpstan
+          ./vendor/bin/phpstan analyse --memory-limit=1G
+
+      - name: Check PHP-CS-Fixer rules
+        run: ./vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
 
       - name: Setup Node
         uses: actions/setup-node@v4

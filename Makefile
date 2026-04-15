@@ -9,7 +9,7 @@ DB_EXEC = $(COMPOSE) exec -T $(DB_SERVICE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format assets frontend-install frontend-dev frontend-build frontend-lint backend-assets ci route-list observability-up observability-down db-shell
+.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format stan cs-fixer cs-check cs-fix security-audit assets frontend-install frontend-dev frontend-build frontend-lint backend-assets ci route-list observability-up observability-down db-shell
 
 help: ## Lista os comandos disponiveis.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nComandos disponiveis:\n"} /^[a-zA-Z0-9_-]+:.*##/ {printf "  make %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -84,12 +84,31 @@ test: ## Roda toda a suite de testes.
 test-filter: ## Roda testes filtrando por FILTER="nome_do_teste".
 	$(APP_EXEC) php artisan test --filter="$(FILTER)"
 
-quality: ## Valida Composer e estilo PHP com Pint.
+quality: ## Valida Composer, seguranca, estilo PHP e analise estatica.
 	$(APP_EXEC) composer validate --strict --no-check-publish
+	$(APP_EXEC) composer audit --no-interaction
 	$(APP_EXEC) ./vendor/bin/pint --test app config database routes tests
+	$(APP_EXEC) mkdir -p storage/framework/phpstan
+	$(APP_EXEC) ./vendor/bin/phpstan analyse --memory-limit=1G
+	$(APP_EXEC) ./vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
 
 format: ## Corrige estilo PHP com Pint.
 	$(APP_EXEC) ./vendor/bin/pint app config database routes tests
+
+stan: ## Roda analise estatica com PHPStan/Larastan.
+	$(APP_EXEC) mkdir -p storage/framework/phpstan
+	$(APP_EXEC) ./vendor/bin/phpstan analyse --memory-limit=1G
+
+cs-fixer: cs-check ## Alias para verificar estilo com PHP-CS-Fixer.
+
+cs-check: ## Verifica estilo PHP com PHP-CS-Fixer sem alterar arquivos.
+	$(APP_EXEC) ./vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
+
+cs-fix: ## Corrige estilo PHP com PHP-CS-Fixer.
+	$(APP_EXEC) ./vendor/bin/php-cs-fixer fix --using-cache=no
+
+security-audit: ## Verifica vulnerabilidades conhecidas nas dependencias PHP.
+	$(APP_EXEC) composer audit --no-interaction
 
 assets: frontend-build ## Alias para buildar o frontend separado.
 

@@ -73,8 +73,13 @@ make fresh       # recria o banco com migrate:fresh --seed
 
 ```bash
 make test        # roda php artisan test
-make quality     # composer validate + Pint em modo verificacao
+make quality     # composer validate + audit + Pint + PHPStan/Larastan + PHP-CS-Fixer
 make format      # corrige estilo com Pint
+make stan        # roda analise estatica com PHPStan/Larastan
+make cs-fixer    # verifica regras do PHP-CS-Fixer sem alterar arquivos
+make cs-check    # verifica regras do PHP-CS-Fixer sem alterar arquivos
+make cs-fix      # corrige estilo com PHP-CS-Fixer
+make security-audit # verifica vulnerabilidades conhecidas do Composer
 make ci          # quality + test + assets
 ```
 
@@ -625,7 +630,7 @@ Jobs:
 
 - `build`: instala dependencias, prepara app e builda assets;
 - `tests`: sobe MySQL e roda `php artisan test`;
-- `code-quality`: valida Composer e roda Pint.
+- `code-quality`: valida Composer, roda audit, Pint, PHPStan/Larastan, PHP-CS-Fixer e lint do frontend.
 
 Localmente:
 
@@ -633,6 +638,15 @@ Localmente:
 make quality
 make ci
 ```
+
+Ferramentas PHP de qualidade:
+
+- Pint: formatador principal do Laravel;
+- PHPStan com Larastan: analise estatica do codigo Laravel;
+- PHP-CS-Fixer: verificacao complementar de padroes de estilo;
+- Composer audit: checagem de vulnerabilidades conhecidas.
+
+Observacao sobre versao: o container atual usa PHP 8.1, entao o projeto usa Larastan `^2.0`. O Larastan `^3.0` exige PHP `^8.2`.
 
 ## Documentacao Complementar
 
@@ -679,4 +693,4 @@ make assets
 - A estrategia multi-tenant atual e single database com `tenant_id`.
 - O portal do cliente final ainda esta como esqueleto tecnico.
 - O RabbitMQ esta disponivel no Docker, mas os jobs Laravel seguem usando Redis por padrao.
-- O projeto usa Pint para estilo de codigo PHP.
+- O projeto usa Pint como formatador principal, PHP-CS-Fixer como checagem complementar e PHPStan/Larastan para analise estatica.
