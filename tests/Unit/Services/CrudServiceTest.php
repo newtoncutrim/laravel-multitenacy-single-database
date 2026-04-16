@@ -26,9 +26,7 @@ class CrudServiceTest extends TestCase
 
             public bool $deleted = false;
 
-            public function __construct(private readonly Model $model)
-            {
-            }
+            public function __construct(private readonly Model $model) {}
 
             public function paginate(int $perPage = 15): LengthAwarePaginator
             {

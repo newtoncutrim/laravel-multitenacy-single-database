@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CrudService
 {
-    public function __construct(private readonly CrudRepositoryInterface $repository)
-    {
-    }
+    public function __construct(private readonly CrudRepositoryInterface $repository) {}
 
     public function paginate(int $perPage = 15): LengthAwarePaginator
     {

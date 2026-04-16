@@ -16,16 +16,16 @@ class PlatformAdminSeeder extends Seeder
         $supportRole = $this->platformRole('Support', User::ROLE_SUPPORT);
 
         $this->createPlatformUser(
-            env('SUPER_ADMIN_EMAIL'),
-            env('SUPER_ADMIN_PASSWORD'),
-            env('SUPER_ADMIN_NAME', 'Super Admin'),
+            config('platform.super_admin.email'),
+            config('platform.super_admin.password'),
+            config('platform.super_admin.name'),
             $superAdminRole
         );
 
         $this->createPlatformUser(
-            env('SUPPORT_USER_EMAIL'),
-            env('SUPPORT_USER_PASSWORD'),
-            env('SUPPORT_USER_NAME', 'Support'),
+            config('platform.support_user.email'),
+            config('platform.support_user.password'),
+            config('platform.support_user.name'),
             $supportRole
         );
     }

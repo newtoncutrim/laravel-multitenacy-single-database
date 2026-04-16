@@ -69,6 +69,6 @@ class CrudRepository implements CrudRepositoryInterface
 
     private function newModel(): Model
     {
-        return new $this->modelClass();
+        return new $this->modelClass;
     }
 }

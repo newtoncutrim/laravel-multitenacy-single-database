@@ -2,7 +2,37 @@
 
 namespace Tests\Unit\Architecture;
 
+use App\Http\Controllers\Api\V1\AppointmentController;
+use App\Http\Controllers\Api\V1\AuditLogController;
+use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\BrandController;
+use App\Http\Controllers\Api\V1\ClientController;
+use App\Http\Controllers\Api\V1\CommunicationMessageController;
 use App\Http\Controllers\Api\V1\CrudController;
+use App\Http\Controllers\Api\V1\DocumentController;
+use App\Http\Controllers\Api\V1\FinancialAccountController;
+use App\Http\Controllers\Api\V1\FinancialTransactionController;
+use App\Http\Controllers\Api\V1\HospitalizationController;
+use App\Http\Controllers\Api\V1\IntegrationController;
+use App\Http\Controllers\Api\V1\InventoryLocationController;
+use App\Http\Controllers\Api\V1\InventoryMovementController;
+use App\Http\Controllers\Api\V1\MedicalRecordController;
+use App\Http\Controllers\Api\V1\MedicalRecordEntryController;
+use App\Http\Controllers\Api\V1\PermissionController;
+use App\Http\Controllers\Api\V1\PetController;
+use App\Http\Controllers\Api\V1\PetVaccineController;
+use App\Http\Controllers\Api\V1\PostController;
+use App\Http\Controllers\Api\V1\PriceTableController;
+use App\Http\Controllers\Api\V1\PriceTableItemController;
+use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\RoleController;
+use App\Http\Controllers\Api\V1\ServiceController;
+use App\Http\Controllers\Api\V1\SubscriptionPlanController;
+use App\Http\Controllers\Api\V1\SupplierController;
+use App\Http\Controllers\Api\V1\TenantController;
+use App\Http\Controllers\Api\V1\TenantSubscriptionController;
+use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\VaccineController;
 use App\Repositories\Contracts\CrudRepositoryInterface;
 use App\Repositories\Eloquent\CrudRepository;
 use App\Services\CrudService;
@@ -31,36 +61,36 @@ class CrudLayerTest extends TestCase
     private function controllerMap(): array
     {
         return [
-            'Appointment' => \App\Http\Controllers\Api\V1\AppointmentController::class,
-            'AuditLog' => \App\Http\Controllers\Api\V1\AuditLogController::class,
-            'Branch' => \App\Http\Controllers\Api\V1\BranchController::class,
-            'Brand' => \App\Http\Controllers\Api\V1\BrandController::class,
-            'Client' => \App\Http\Controllers\Api\V1\ClientController::class,
-            'CommunicationMessage' => \App\Http\Controllers\Api\V1\CommunicationMessageController::class,
-            'Document' => \App\Http\Controllers\Api\V1\DocumentController::class,
-            'FinancialAccount' => \App\Http\Controllers\Api\V1\FinancialAccountController::class,
-            'FinancialTransaction' => \App\Http\Controllers\Api\V1\FinancialTransactionController::class,
-            'Hospitalization' => \App\Http\Controllers\Api\V1\HospitalizationController::class,
-            'Integration' => \App\Http\Controllers\Api\V1\IntegrationController::class,
-            'InventoryLocation' => \App\Http\Controllers\Api\V1\InventoryLocationController::class,
-            'InventoryMovement' => \App\Http\Controllers\Api\V1\InventoryMovementController::class,
-            'MedicalRecord' => \App\Http\Controllers\Api\V1\MedicalRecordController::class,
-            'MedicalRecordEntry' => \App\Http\Controllers\Api\V1\MedicalRecordEntryController::class,
-            'Permission' => \App\Http\Controllers\Api\V1\PermissionController::class,
-            'Pet' => \App\Http\Controllers\Api\V1\PetController::class,
-            'PetVaccine' => \App\Http\Controllers\Api\V1\PetVaccineController::class,
-            'Post' => \App\Http\Controllers\Api\V1\PostController::class,
-            'PriceTable' => \App\Http\Controllers\Api\V1\PriceTableController::class,
-            'PriceTableItem' => \App\Http\Controllers\Api\V1\PriceTableItemController::class,
-            'Product' => \App\Http\Controllers\Api\V1\ProductController::class,
-            'Role' => \App\Http\Controllers\Api\V1\RoleController::class,
-            'Service' => \App\Http\Controllers\Api\V1\ServiceController::class,
-            'SubscriptionPlan' => \App\Http\Controllers\Api\V1\SubscriptionPlanController::class,
-            'Supplier' => \App\Http\Controllers\Api\V1\SupplierController::class,
-            'Tenant' => \App\Http\Controllers\Api\V1\TenantController::class,
-            'TenantSubscription' => \App\Http\Controllers\Api\V1\TenantSubscriptionController::class,
-            'User' => \App\Http\Controllers\Api\V1\UserController::class,
-            'Vaccine' => \App\Http\Controllers\Api\V1\VaccineController::class,
+            'Appointment' => AppointmentController::class,
+            'AuditLog' => AuditLogController::class,
+            'Branch' => BranchController::class,
+            'Brand' => BrandController::class,
+            'Client' => ClientController::class,
+            'CommunicationMessage' => CommunicationMessageController::class,
+            'Document' => DocumentController::class,
+            'FinancialAccount' => FinancialAccountController::class,
+            'FinancialTransaction' => FinancialTransactionController::class,
+            'Hospitalization' => HospitalizationController::class,
+            'Integration' => IntegrationController::class,
+            'InventoryLocation' => InventoryLocationController::class,
+            'InventoryMovement' => InventoryMovementController::class,
+            'MedicalRecord' => MedicalRecordController::class,
+            'MedicalRecordEntry' => MedicalRecordEntryController::class,
+            'Permission' => PermissionController::class,
+            'Pet' => PetController::class,
+            'PetVaccine' => PetVaccineController::class,
+            'Post' => PostController::class,
+            'PriceTable' => PriceTableController::class,
+            'PriceTableItem' => PriceTableItemController::class,
+            'Product' => ProductController::class,
+            'Role' => RoleController::class,
+            'Service' => ServiceController::class,
+            'SubscriptionPlan' => SubscriptionPlanController::class,
+            'Supplier' => SupplierController::class,
+            'Tenant' => TenantController::class,
+            'TenantSubscription' => TenantSubscriptionController::class,
+            'User' => UserController::class,
+            'Vaccine' => VaccineController::class,
         ];
     }
 }

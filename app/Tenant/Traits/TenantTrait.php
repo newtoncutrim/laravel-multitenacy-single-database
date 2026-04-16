@@ -13,7 +13,7 @@ trait TenantTrait
 {
     protected static function bootTenantTrait(): void
     {
-        static::addGlobalScope(new TenantScope());
+        static::addGlobalScope(new TenantScope);
         static::observe(TenantObserver::class);
     }
 }
