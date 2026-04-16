@@ -29,10 +29,17 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-# Install redis
-RUN pecl install -o -f redis \
+# Install PECL extensions
+RUN pecl install -o -f redis xdebug \
     &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
+    &&  docker-php-ext-enable redis xdebug
+
+# Default Xdebug settings for local Docker development.
+ENV XDEBUG_MODE=debug,develop \
+    XDEBUG_START_WITH_REQUEST=yes \
+    XDEBUG_CLIENT_HOST=host.docker.internal \
+    XDEBUG_CLIENT_PORT=9003 \
+    XDEBUG_IDEKEY=VSCODE
 
 # Set working directory
 WORKDIR /var/www

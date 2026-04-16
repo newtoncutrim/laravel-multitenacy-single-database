@@ -9,7 +9,7 @@ DB_EXEC = $(COMPOSE) exec -T $(DB_SERVICE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format stan cs-fixer cs-check cs-fix security-audit assets frontend-install frontend-dev frontend-build frontend-lint backend-assets ci route-list observability-up observability-down db-shell
+.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format stan cs-fixer cs-check cs-fix security-audit xdebug-info assets frontend-install frontend-dev frontend-build frontend-lint backend-assets ci route-list observability-up observability-down db-shell
 
 help: ## Lista os comandos disponiveis.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nComandos disponiveis:\n"} /^[a-zA-Z0-9_-]+:.*##/ {printf "  make %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -109,6 +109,9 @@ cs-fix: ## Corrige estilo PHP com PHP-CS-Fixer.
 
 security-audit: ## Verifica vulnerabilidades conhecidas nas dependencias PHP.
 	$(APP_EXEC) composer audit --no-interaction
+
+xdebug-info: ## Mostra a configuracao do Xdebug no container app.
+	$(APP_EXEC) php --ri xdebug
 
 assets: frontend-build ## Alias para buildar o frontend separado.
 

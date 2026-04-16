@@ -80,6 +80,7 @@ make cs-fixer    # verifica regras do PHP-CS-Fixer sem alterar arquivos
 make cs-check    # verifica regras do PHP-CS-Fixer sem alterar arquivos
 make cs-fix      # corrige estilo com PHP-CS-Fixer
 make security-audit # verifica vulnerabilidades conhecidas do Composer
+make xdebug-info # mostra a configuracao do Xdebug no container app
 make ci          # quality + test + assets
 ```
 
@@ -119,6 +120,7 @@ Servicos principais:
 - MySQL: porta `3306`
 - RabbitMQ Management: `http://localhost:15672` (`laravel` / `secret`)
 - Redis: usado por filas/cache conforme configuracao
+- Xdebug: porta `9003`, instalado no container PHP e apontando para `host.docker.internal`
 
 Servicos de observabilidade, quando habilitados:
 
@@ -138,6 +140,67 @@ Para parar:
 
 ```bash
 make observability-down
+```
+
+## Debug Com Xdebug
+
+O Xdebug 3 ja vem instalado na imagem PHP do Docker e fica pronto depois do build:
+
+```bash
+make setup
+```
+
+Ou, se os containers ja existirem antes dessa configuracao:
+
+```bash
+docker compose build app queue
+docker compose up -d
+```
+
+No VS Code, instale a extensao `PHP Debug`, abra a aba Run and Debug e inicie a configuracao `Listen for Xdebug (Docker)`. O projeto ja inclui `.vscode/launch.json` com o mapeamento:
+
+```txt
+/var/www -> ${workspaceFolder}
+```
+
+Com o listener ativo, basta colocar um breakpoint e acessar o Laravel em:
+
+```txt
+http://localhost:8989
+```
+
+Tambem funciona para comandos CLI dentro do container, por exemplo:
+
+```bash
+docker compose exec app php artisan route:list
+```
+
+Configuracao padrao no `.env.example`:
+
+```env
+XDEBUG_MODE=debug,develop
+XDEBUG_START_WITH_REQUEST=yes
+XDEBUG_CLIENT_HOST=host.docker.internal
+XDEBUG_CLIENT_PORT=9003
+XDEBUG_IDEKEY=VSCODE
+```
+
+Para conferir se o Xdebug esta carregado:
+
+```bash
+make xdebug-info
+```
+
+Para desativar temporariamente:
+
+```env
+XDEBUG_MODE=off
+```
+
+Depois reinicie o container `app`:
+
+```bash
+docker compose restart app
 ```
 
 ## Primeiro Superusuario
