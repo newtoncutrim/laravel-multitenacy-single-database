@@ -1,9 +1,29 @@
 import type { ApiEnvelope, AuthUser, LoginPayload, RegisterTenantPayload } from '../types/auth';
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8989';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
 
 type RequestOptions = RequestInit & {
   json?: unknown;
+};
+
+export type PaginatedResponse<T = Record<string, unknown>> = {
+  current_page: number;
+  data: T[];
+  first_page_url?: string;
+  from: number | null;
+  last_page: number;
+  last_page_url?: string;
+  links?: Array<{
+    url: string | null;
+    label: string;
+    active: boolean;
+  }>;
+  next_page_url: string | null;
+  path?: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number | null;
+  total: number;
 };
 
 async function csrfCookie(): Promise<void> {
@@ -21,12 +41,17 @@ function csrfToken(): string | null {
   return token ? decodeURIComponent(token) : null;
 }
 
-async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const headers = new Headers(options.headers);
+
+  headers.set('Accept', 'application/json');
 
   if (options.json !== undefined) {
     headers.set('Content-Type', 'application/json');
-    headers.set('Accept', 'application/json');
+  }
+
+  if (options.method && options.method !== 'GET') {
+    await csrfCookie();
   }
 
   const token = csrfToken();
@@ -56,8 +81,6 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 }
 
 export async function login(payload: LoginPayload): Promise<AuthUser> {
-  await csrfCookie();
-
   const response = await request<ApiEnvelope<AuthUser>>('/api/auth/login', {
     method: 'POST',
     json: payload,
@@ -67,8 +90,6 @@ export async function login(payload: LoginPayload): Promise<AuthUser> {
 }
 
 export async function registerTenant(payload: RegisterTenantPayload): Promise<AuthUser> {
-  await csrfCookie();
-
   const response = await request<ApiEnvelope<AuthUser>>('/api/auth/register', {
     method: 'POST',
     json: payload,
@@ -89,9 +110,15 @@ export async function logout(): Promise<void> {
   });
 }
 
+export async function listApiResource<T = Record<string, unknown>>(path: string, perPage = 10): Promise<PaginatedResponse<T>> {
+  const separator = path.includes('?') ? '&' : '?';
+
+  return request<PaginatedResponse<T>>(`${path}${separator}per_page=${perPage}`);
+}
+
 export const endpointsByArea = {
   platform: '/api/platform/v1',
-  support: '/support',
+  support: '/api/support/v1',
   clinic: '/api/clinic/v1',
   portal: '/api/portal/v1',
 } as const;

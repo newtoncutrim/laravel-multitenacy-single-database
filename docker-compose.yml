@@ -64,7 +64,7 @@ services:
             - ./frontend:/var/www/frontend
             - frontend_node_modules:/var/www/frontend/node_modules
         environment:
-            VITE_API_BASE_URL: ${FRONTEND_API_BASE_URL:-http://localhost:8989}
+            VITE_PROXY_API_TARGET: ${FRONTEND_PROXY_API_TARGET:-http://nginx}
         depends_on:
             - nginx
         networks:
