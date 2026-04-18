@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Segment;
 use App\Models\Tenant;
+use App\Services\TenantProvisioningService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -38,21 +40,32 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'tenant_name' => ['required', 'string', 'max:255', 'unique:tenants,name'],
+            'segment_slug' => ['nullable', 'string', 'exists:segments,slug'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
         $user = DB::transaction(function () use ($data) {
+            $segment = Segment::query()
+                ->where('slug', $data['segment_slug'] ?? 'veterinary')
+                ->where('active', true)
+                ->first();
+
             $tenant = Tenant::create([
+                'segment_id' => $segment?->id,
                 'name' => $data['tenant_name'],
             ]);
 
-            return $tenant->users()->create([
+            app(TenantProvisioningService::class)->provision($tenant, $segment);
+
+            $user = $tenant->users()->create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
+
+            return $user;
         });
 
         Auth::login($user);
@@ -87,6 +100,14 @@ class AuthController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'tenant_id' => $user->tenant_id,
+            'tenant' => $user->tenant ? [
+                'id' => $user->tenant->id,
+                'name' => $user->tenant->name,
+                'segment' => $user->tenant->segment ? [
+                    'slug' => $user->tenant->segment->slug,
+                    'name' => $user->tenant->segment->name,
+                ] : null,
+            ] : null,
             'roles' => $user->roles()->pluck('slug')->values(),
             'area' => $this->area($user),
             'home_path' => route($user->homeRoute(), absolute: false),

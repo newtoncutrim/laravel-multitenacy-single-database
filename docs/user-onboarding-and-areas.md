@@ -286,6 +286,7 @@ Informe:
 
 ```txt
 tenant_name = nome da clinica
+segment_slug = segmento do tenant, exemplo veterinary ou psychology
 name        = nome do primeiro usuario
 email       = email do primeiro usuario
 password    = senha
@@ -296,6 +297,7 @@ O sistema cria:
 ```txt
 Tenant
 User com tenant_id preenchido
+TenantModules padrao do segmento
 ```
 
 ### Como o sistema identifica

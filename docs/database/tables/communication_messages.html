@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>communication_messages - laravel.laravel</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+        <!-- Bootstrap 3.3.5 -->
+        <link rel="stylesheet" href="../bower/admin-lte/bootstrap/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="../bower/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="../bower/ionicons/css/ionicons.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="../bower/datatables.net-bs/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" href="../bower/datatables.net-buttons-bs/css/buttons.bootstrap.min.css">
+        <!-- Code Mirror -->
+        <link rel="stylesheet" href="../bower/codemirror/codemirror.css">
+        <!-- Fonts -->
+        <link href='../fonts/indieflower/indie-flower.css' rel='stylesheet' type='text/css'>
+        <link href='../fonts/source-sans-pro/source-sans-pro.css' rel='stylesheet' type='text/css'>
+
+        <!-- Theme style -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/AdminLTE.min.css">
+        <!-- Salvattore -->
+        <link rel="stylesheet" href="../bower/salvattore/salvattore.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+           folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/skins/_all-skins.min.css">
+        <!-- SchemaSpy -->
+        <link rel="stylesheet" href="../schemaSpy.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="../bower/html5shiv/html5shiv.min.js"></script>
+        <script src="../bower/respond/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+    <body class="hold-transition skin-blue layout-top-nav">
+        <div class="wrapper">
+            <header class="main-header">
+                <nav class="navbar navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a href="../index.html" class="navbar-brand"><b>laravel</b></a><span class="navbar-brand" style="padding-left: 0">.laravel</span>
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"><i class="fa fa-bars"></i></button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="../index.html">Tables <span class="sr-only">(current)</span></a></li>
+                                <li><a href="../columns.html" title="All of the columns in the schema">Columns</a></li>
+                                <li><a href="../constraints.html" title="Useful for diagnosing error messages that just give constraint name or number">Constraints</a></li>
+                                <li><a href="../relationships.html" title="Diagram of table relationships">Relationships</a></li>
+                                <li><a href="../orphans.html" title="View of tables with neither parents nor children">Orphan&nbsp;Tables</a></li>
+                                <li><a href="../anomalies.html" title="Things that might not be quite right">Anomalies</a></li>
+                                <li><a href="../routines.html" title="Procedures and functions">Routines</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.navbar-collapse -->
+                        <!-- Navbar Right Menu -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+            <!-- Main content -->
+            <!-- Full Width Column -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>communication_messages</h1><p><span id="recordNumber">0</span> rows</p><br />
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            <h3 id="Columns" class="box-title">Columns</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table
+                                    id="standard_table"
+                                    class="table table-bordered table-striped dataTable"
+                                    role="grid"
+                                    data-paging="true"
+                                    data-page-length="10"
+                                    data-length-change="false">
+                                <thead align='left'>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th title='Are nulls allowed?'>Nulls</th>
+                                    <th title='Is column automatically updated?'>Auto</th>
+                                    <th title='Default value'>Default</th>
+                                    <th title='Columns in tables that reference this column'>Children</th>
+                                    <th title='Columns in tables that are referenced by this column'>Parents</th>
+                                    <th title='Comments' class="toggle"><span>Comments</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class='primaryKey' title='Primary Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="id">id</span></td>
+                                    <td>BIGINT UNSIGNED</td>
+                                    <td>20</td>
+                                    <td title=''></td>
+                                    <td title='Automatically updated by the database'>√</td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="tenant_id">tenant_id</span></td>
+                                    <td>BIGINT UNSIGNED</td>
+                                    <td>20</td>
+                                    <td title=''></td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="communication_messages.tenant_id references tenants.id via communication_messages_tenant_id_foreign"><a href='tenants.html'>tenants</a><span class='relatedKey'>.id</span></td>
+                                                <td class="constraint detail">communication_messages_tenant_id_foreign</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="branch_id">branch_id</span></td>
+                                    <td>BIGINT UNSIGNED</td>
+                                    <td>20</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="communication_messages.branch_id references branches.id via communication_messages_branch_id_foreign"><a href='branches.html'>branches</a><span class='relatedKey'>.id</span></td>
+                                                <td class="constraint detail">communication_messages_branch_id_foreign</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="client_id">client_id</span></td>
+                                    <td>BIGINT UNSIGNED</td>
+                                    <td>20</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="communication_messages.client_id references clients.id via communication_messages_client_id_foreign"><a href='clients.html'>clients</a><span class='relatedKey'>.id</span></td>
+                                                <td class="constraint detail">communication_messages_client_id_foreign</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="channel">channel</span></td>
+                                    <td>VARCHAR</td>
+                                    <td>255</td>
+                                    <td title=''></td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="direction">direction</span></td>
+                                    <td>VARCHAR</td>
+                                    <td>255</td>
+                                    <td title=''></td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class='indexedColumn' title='Indexed'><i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'></i><span id="status">status</span></td>
+                                    <td>VARCHAR</td>
+                                    <td>255</td>
+                                    <td title=''></td>
+                                    <td title=''></td>
+                                    <td>pending</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="subject">subject</span></td>
+                                    <td>VARCHAR</td>
+                                    <td>255</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="body">body</span></td>
+                                    <td>TEXT</td>
+                                    <td>65535</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class='indexedColumn' title='Indexed'><i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'></i><span id="scheduled_at">scheduled_at</span></td>
+                                    <td>DATETIME</td>
+                                    <td>19</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="sent_at">sent_at</span></td>
+                                    <td>DATETIME</td>
+                                    <td>19</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="created_at">created_at</span></td>
+                                    <td>TIMESTAMP</td>
+                                    <td>19</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="updated_at">updated_at</span></td>
+                                    <td>TIMESTAMP</td>
+                                    <td>19</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-sitemap"></i>
+                            <h3 id="Indexes" class="box-title">Indexes</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table
+                                    id="indexes_table"
+                                    class="table table-bordered table-striped dataTable"
+                                    role="grid"
+                                    data-paging="true"
+                                    data-page-length="10"
+                                    data-length-change="false">
+                                <thead>
+                                <tr>
+                                    <th>Constraint Name</th>
+                                    <th>Type</th>
+                                    <th>Sort</th>
+                                    <th>Column(s)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class='primaryKey' title='Primary Key'><i class='icon ion-key iconkey'></i> PRIMARY</td>
+                                    <td>Primary key</td>
+                                    <td><span title='Ascending'>Asc</span></td>
+                                    <td>id</td>
+                                </tr>
+                                <tr>
+                                    <td title='Indexed'>communication_messages_branch_id_foreign</td>
+                                    <td>Performance</td>
+                                    <td><span title='Ascending'>Asc</span></td>
+                                    <td>branch_id</td>
+                                </tr>
+                                <tr>
+                                    <td title='Indexed'>communication_messages_client_id_foreign</td>
+                                    <td>Performance</td>
+                                    <td><span title='Ascending'>Asc</span></td>
+                                    <td>client_id</td>
+                                </tr>
+                                <tr>
+                                    <td title='Indexed'>communication_messages_tenant_id_scheduled_at_index</td>
+                                    <td>Performance</td>
+                                    <td><span title='Ascending'>Asc</span>/<span title='Ascending'>Asc</span></td>
+                                    <td>tenant_id + scheduled_at</td>
+                                </tr>
+                                <tr>
+                                    <td title='Indexed'>communication_messages_tenant_id_status_index</td>
+                                    <td>Performance</td>
+                                    <td><span title='Ascending'>Asc</span>/<span title='Ascending'>Asc</span></td>
+                                    <td>tenant_id + status</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- /.box-body -->
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-code-fork"></i>
+                            <h3 id="Relationships" class="box-title">Relationships</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="nav-tabs-custom"><!-- Tabs within a box -->
+                                <h5>Close relationships within degrees of separation</h5>
+                                <ul class="nav nav-tabs pull-left ui-sortable-handle">
+                                    <li class="active"><a href="#oneDegreeImg-chart" data-toggle="tab" aria-expanded="true">One</a></li>
+                                    <li class=""><a href="#twodegreesDegreeImg-chart" data-toggle="tab" aria-expanded="true">Two degrees</a></li>
+                                    <li class=""><a href="#oneimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">One implied</a></li>
+                                    <li class=""><a href="#twoimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">Two implied</a></li>
+                                </ul>
+                                <div class="tab-content no-padding">
+                                    <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
+<area shape="rect" id="node1" href="branches.html" target="_top" title="branches" alt="" coords="209,87,383,292">
+<area shape="rect" id="node2" href="tenants.html" target="_top" title="tenants" alt="" coords="5,116,165,380">
+<area shape="rect" id="node3" href="clients.html" target="_top" title="clients" alt="" coords="427,143,585,377">
+<area shape="rect" id="node4" href="communication_messages.html" target="_top" title="communication_messages" alt="" coords="629,5,1089,456">
+</map>
+                                        <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/communication_messages.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="twodegreesDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
+<area shape="rect" id="node1" href="appointments.html" target="_top" title="appointments" alt="" coords="1595,938,1814,1026">
+<area shape="rect" id="node2" href="branches.html" target="_top" title="branches" alt="" coords="488,938,661,1026">
+<area shape="rect" id="node3" href="clients.html" target="_top" title="clients" alt="" coords="826,724,974,812">
+<area shape="rect" id="node4" href="pets.html" target="_top" title="pets" alt="" coords="1244,149,1379,237">
+<area shape="rect" id="node5" href="tenants.html" target="_top" title="tenants" alt="" coords="228,1401,387,1489">
+<area shape="rect" id="node6" href="users.html" target="_top" title="users" alt="" coords="829,1186,971,1274">
+<area shape="rect" id="node32" href="segments.html" target="_top" title="segments" alt="" coords="5,1442,184,1530">
+<area shape="rect" id="node7" href="audit_logs.html" target="_top" title="audit_logs" alt="" coords="1220,1326,1403,1414">
+<area shape="rect" id="node8" href="brands.html" target="_top" title="brands" alt="" coords="499,1646,650,1734">
+<area shape="rect" id="node9" href="communication_messages.html" target="_top" title="communication_messages" alt="" coords="1081,254,1541,705">
+<area shape="rect" id="node10" href="documents.html" target="_top" title="documents" alt="" coords="2213,217,2403,305">
+<area shape="rect" id="node11" href="medical_records.html" target="_top" title="medical_records" alt="" coords="1868,938,2109,1026">
+<area shape="rect" id="node12" href="financial_accounts.html" target="_top" title="financial_accounts" alt="" coords="769,1009,1031,1097">
+<area shape="rect" id="node13" href="financial_transactions.html" target="_top" title="financial_transactions" alt="" coords="1163,1009,1460,1097">
+<area shape="rect" id="node14" href="suppliers.html" target="_top" title="suppliers" alt="" coords="488,1150,661,1238">
+<area shape="rect" id="node15" href="hospitalizations.html" target="_top" title="hospitalizations" alt="" coords="1585,793,1824,881">
+<area shape="rect" id="node16" href="integrations.html" target="_top" title="integrations" alt="" coords="473,1364,676,1452">
+<area shape="rect" id="node17" href="inventory_locations.html" target="_top" title="inventory_locations" alt="" coords="763,1364,1037,1452">
+<area shape="rect" id="node18" href="inventory_movements.html" target="_top" title="inventory_movements" alt="" coords="1161,1538,1461,1626">
+<area shape="rect" id="node19" href="products.html" target="_top" title="products" alt="" coords="815,1646,985,1734">
+<area shape="rect" id="node20" href="medical_record_entries.html" target="_top" title="medical_record_entries" alt="" coords="2153,1414,2463,1502">
+<area shape="rect" id="node21" href="pet_vaccines.html" target="_top" title="pet_vaccines" alt="" coords="1601,149,1809,237">
+<area shape="rect" id="node22" href="vaccines.html" target="_top" title="vaccines" alt="" coords="817,98,983,186">
+<area shape="rect" id="node23" href="posts.html" target="_top" title="posts" alt="" coords="1243,1432,1379,1520">
+<area shape="rect" id="node24" href="price_table_items.html" target="_top" title="price_table_items" alt="" coords="1184,1698,1439,1786">
+<area shape="rect" id="node25" href="price_tables.html" target="_top" title="price_tables" alt="" coords="799,1752,1001,1840">
+<area shape="rect" id="node26" href="services.html" target="_top" title="services" alt="" coords="818,1505,982,1593">
+<area shape="rect" id="node27" href="roles.html" target="_top" title="roles" alt="" coords="503,1965,646,2053">
+<area shape="rect" id="node28" href="tenant_brandings.html" target="_top" title="tenant_brandings" alt="" coords="447,2070,702,2158">
+<area shape="rect" id="node29" href="tenant_modules.html" target="_top" title="tenant_modules" alt="" coords="455,2176,695,2264">
+<area shape="rect" id="node30" href="tenant_settings.html" target="_top" title="tenant_settings" alt="" coords="457,2281,693,2369">
+<area shape="rect" id="node31" href="tenant_subscriptions.html" target="_top" title="tenant_subscriptions" alt="" coords="431,2386,719,2474">
+</map>
+                                        <a name='diagram'><img id="twodegreesDegreeImg" src="../diagrams/tables/communication_messages.2degrees.png" usemap="#twoDegreesRelationshipsDiagram" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="oneimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="oneDegreeRelationshipsDiagramImplied" name="oneDegreeRelationshipsDiagramImplied">
+<area shape="rect" id="node1" href="branches.html" target="_top" title="branches" alt="" coords="209,87,383,292">
+<area shape="rect" id="node2" href="tenants.html" target="_top" title="tenants" alt="" coords="5,116,165,380">
+<area shape="rect" id="node3" href="clients.html" target="_top" title="clients" alt="" coords="427,143,585,377">
+<area shape="rect" id="node4" href="communication_messages.html" target="_top" title="communication_messages" alt="" coords="629,5,1089,456">
+</map>
+                                        <a name='diagram'><img id="oneimpliedDegreeImg" src="../diagrams/tables/communication_messages.implied1degrees.png" usemap="#oneDegreeRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="twoimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="twoDegreesRelationshipsDiagramImplied" name="twoDegreesRelationshipsDiagramImplied">
+<area shape="rect" id="node1" href="appointments.html" target="_top" title="appointments" alt="" coords="1747,963,1966,1051">
+<area shape="rect" id="node2" href="branches.html" target="_top" title="branches" alt="" coords="640,662,813,750">
+<area shape="rect" id="node3" href="clients.html" target="_top" title="clients" alt="" coords="978,698,1126,786">
+<area shape="rect" id="node4" href="pets.html" target="_top" title="pets" alt="" coords="1396,859,1531,947">
+<area shape="rect" id="node5" href="tenants.html" target="_top" title="tenants" alt="" coords="304,1231,463,1319">
+<area shape="rect" id="node6" href="users.html" target="_top" title="users" alt="" coords="981,1053,1123,1141">
+<area shape="rect" id="node9" href="password_reset_tokens.html" target="_top" title="password_reset_tokens" alt="" coords="228,730,539,818">
+<area shape="rect" id="node33" href="segments.html" target="_top" title="segments" alt="" coords="5,1273,184,1361">
+<area shape="rect" id="node7" href="audit_logs.html" target="_top" title="audit_logs" alt="" coords="1372,1181,1555,1269">
+<area shape="rect" id="node8" href="brands.html" target="_top" title="brands" alt="" coords="651,1973,802,2061">
+<area shape="rect" id="node10" href="communication_messages.html" target="_top" title="communication_messages" alt="" coords="1233,247,1693,698">
+<area shape="rect" id="node11" href="documents.html" target="_top" title="documents" alt="" coords="2365,662,2555,750">
+<area shape="rect" id="node12" href="medical_records.html" target="_top" title="medical_records" alt="" coords="2020,963,2261,1051">
+<area shape="rect" id="node13" href="financial_accounts.html" target="_top" title="financial_accounts" alt="" coords="921,239,1183,327">
+<area shape="rect" id="node14" href="financial_transactions.html" target="_top" title="financial_transactions" alt="" coords="1315,106,1612,194">
+<area shape="rect" id="node15" href="suppliers.html" target="_top" title="suppliers" alt="" coords="640,803,813,891">
+<area shape="rect" id="node16" href="hospitalizations.html" target="_top" title="hospitalizations" alt="" coords="1737,735,1976,823">
+<area shape="rect" id="node17" href="integrations.html" target="_top" title="integrations" alt="" coords="625,1759,828,1847">
+<area shape="rect" id="node18" href="inventory_locations.html" target="_top" title="inventory_locations" alt="" coords="915,1749,1189,1837">
+<area shape="rect" id="node19" href="inventory_movements.html" target="_top" title="inventory_movements" alt="" coords="1313,1782,1613,1870">
+<area shape="rect" id="node20" href="products.html" target="_top" title="products" alt="" coords="967,1890,1137,1978">
+<area shape="rect" id="node21" href="medical_record_entries.html" target="_top" title="medical_record_entries" alt="" coords="2305,1583,2615,1671">
+<area shape="rect" id="node22" href="pet_vaccines.html" target="_top" title="pet_vaccines" alt="" coords="1753,1215,1961,1303">
+<area shape="rect" id="node23" href="vaccines.html" target="_top" title="vaccines" alt="" coords="969,1578,1135,1666">
+<area shape="rect" id="node24" href="posts.html" target="_top" title="posts" alt="" coords="1395,1286,1531,1374">
+<area shape="rect" id="node25" href="price_table_items.html" target="_top" title="price_table_items" alt="" coords="1336,2049,1591,2137">
+<area shape="rect" id="node26" href="price_tables.html" target="_top" title="price_tables" alt="" coords="951,2101,1153,2189">
+<area shape="rect" id="node27" href="services.html" target="_top" title="services" alt="" coords="970,1995,1134,2083">
+<area shape="rect" id="node28" href="roles.html" target="_top" title="roles" alt="" coords="655,1266,798,1354">
+<area shape="rect" id="node29" href="tenant_brandings.html" target="_top" title="tenant_brandings" alt="" coords="599,1017,854,1105">
+<area shape="rect" id="node30" href="tenant_modules.html" target="_top" title="tenant_modules" alt="" coords="607,1513,847,1601">
+<area shape="rect" id="node31" href="tenant_settings.html" target="_top" title="tenant_settings" alt="" coords="609,1618,845,1706">
+<area shape="rect" id="node32" href="tenant_subscriptions.html" target="_top" title="tenant_subscriptions" alt="" coords="583,1371,871,1459">
+</map>
+                                        <a name='diagram'><img id="twoimpliedDegreeImg" src="../diagrams/tables/communication_messages.implied2degrees.png" usemap="#twoDegreesRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div>
+                </section>
+                <script>
+                    var config = {
+                        pagination: true
+                    }
+                </script>
+            </div>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <div>
+                    <div class="pull-right hidden-xs">
+                        <a href="https://github.com/schemaspy/schemaspy" title="GitHub for SchemaSpy"><i class="fa fa-github-square fa-2x"></i></a>
+                        <a href="http://stackoverflow.com/questions/tagged/schemaspy" title="StackOverflow for SchemaSpy"><i class="fa fa-stack-overflow fa-2x"></i></a>
+                    </div>
+                    <strong>Generated by <a href="http://schemaspy.org/" class="logo-text"><i class="fa fa-database"></i> SchemaSpy 7.0.2</a></strong>
+                </div>
+                <!-- /.container -->
+            </footer>
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery 2.2.3 -->
+        <script src="../bower/admin-lte/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="../bower/admin-lte/plugins/jQueryUI/jquery-ui.min.js"></script>
+        <!-- Bootstrap 3.3.5 -->
+        <script src="../bower/admin-lte/bootstrap/js/bootstrap.min.js"></script>
+        <!-- DataTables -->
+        <script src="../bower/datatables.net/jquery.dataTables.min.js"></script>
+        <script src="../bower/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/dataTables.buttons.min.js"></script>
+        <script src="../bower/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.html5.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.print.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.colVis.min.js"></script>
+        <!-- SheetJS -->
+        <script src="../bower/js-xlsx/xlsx.full.min.js"></script>
+        <!-- pdfmake -->
+        <script src="../bower/pdfmake/pdfmake.min.js"></script>
+        <script src="../bower/pdfmake/vfs_fonts.js"></script>
+        <!-- SlimScroll -->
+        <script src="../bower/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <!-- FastClick -->
+        <script src="../bower/admin-lte/plugins/fastclick/fastclick.js"></script>
+        <!-- Salvattore -->
+        <script src="../bower/salvattore/salvattore.min.js"></script>
+        <!-- AnchorJS -->
+        <script src="../bower/anchor-js/anchor.min.js"></script>
+        <!-- CodeMirror -->
+        <script src="../bower/codemirror/codemirror.js"></script>
+        <script src="../bower/codemirror/sql.js"></script>
+        <!-- AdminLTE App -->
+        <script src="../bower/admin-lte/dist/js/app.min.js"></script>
+        <script src="table.js"></script>
+        <script src="../schemaSpy.js"></script>
+    </body>
+</html>

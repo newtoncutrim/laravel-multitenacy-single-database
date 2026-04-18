@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Building2, Database, Headphones, Lock, LogOut, PawPrint, RefreshCcw, ShieldCheck } from 'lucide-react';
-import { currentUser, endpointsByArea, listApiResource, logout } from '../services/api';
+import { appBootstrap, endpointsByArea, listApiResource, logout } from '../services/api';
 import type { PaginatedResponse } from '../services/api';
-import { resourcesForArea } from '../services/resources';
-import type { ApiResourceDefinition } from '../services/resources';
 import type { AuthUser } from '../types/auth';
+
+type ApiResourceDefinition = {
+  key: string;
+  label: string;
+  path: string;
+  description: string;
+  category: string;
+};
 
 function Dashboard() {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [resources, setResources] = useState<ApiResourceDefinition[]>([]);
   const [message, setMessage] = useState('Carregando sessao...');
   const [loading, setLoading] = useState(false);
   const [selectedResource, setSelectedResource] = useState<ApiResourceDefinition | null>(null);
@@ -17,14 +24,24 @@ function Dashboard() {
   const [resourceMessage, setResourceMessage] = useState('');
   const navigate = useNavigate();
 
-  const resources = user ? resourcesForArea(user.area) : [];
-
   useEffect(() => {
-    currentUser()
-      .then((authUser) => {
-        setUser(authUser);
-        setMessage(`Acesso liberado para ${authUser.area}.`);
-        setSelectedResource(resourcesForArea(authUser.area)[0] ?? null);
+    appBootstrap()
+      .then((bootstrap) => {
+        setUser(bootstrap.user);
+        setMessage(`Acesso liberado para ${bootstrap.user.area}.`);
+
+        const apiResources = bootstrap.navigation
+          .filter((item) => item.api_prefix)
+          .map((item) => ({
+            key: item.module,
+            label: item.label,
+            path: item.api_prefix as string,
+            description: bootstrap.modules.find((module) => module.key === item.module)?.description ?? 'Modulo habilitado para este tenant.',
+            category: item.category,
+          }));
+
+        setResources(apiResources);
+        setSelectedResource(apiResources[0] ?? null);
       })
       .catch(() => {
         setMessage('Entre para acessar sua area.');
@@ -186,7 +203,7 @@ function Dashboard() {
               </div>
             ) : (
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Ainda nao ha um grupo `/api/support/v1` registrado para usuarios de suporte. Quando ele existir no Laravel, o frontend pode consumir do mesmo jeito.
+                Nenhum modulo com rota API foi habilitado para este usuario/tenant.
               </p>
             )}
           </div>

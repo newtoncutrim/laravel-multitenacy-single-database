@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\EnsureClientPortalAccess;
+use App\Http\Middleware\EnsureTenantModuleEnabled;
 use App\Http\Middleware\EnsurePlatformUser;
 use App\Http\Middleware\EnsureSupportUser;
 use App\Http\Middleware\EnsureTenantUser;
@@ -87,6 +88,7 @@ class Kernel extends HttpKernel
         'can' => Authorize::class,
         'client.portal' => EnsureClientPortalAccess::class,
         'guest' => RedirectIfAuthenticated::class,
+        'module' => EnsureTenantModuleEnabled::class,
         'password.confirm' => RequirePassword::class,
         'platform' => EnsurePlatformUser::class,
         'signed' => ValidateSignature::class,

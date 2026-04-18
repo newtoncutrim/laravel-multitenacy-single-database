@@ -5,6 +5,14 @@ export type AuthUser = {
   name: string;
   email: string;
   tenant_id: number | null;
+  tenant?: {
+    id: number;
+    name: string;
+    segment: {
+      slug: string;
+      name: string;
+    } | null;
+  } | null;
   roles: string[];
   area: UserArea;
   home_path: string;
@@ -22,6 +30,7 @@ export type LoginPayload = {
 
 export type RegisterTenantPayload = {
   tenant_name: string;
+  segment_slug?: string;
   name: string;
   email: string;
   password: string;

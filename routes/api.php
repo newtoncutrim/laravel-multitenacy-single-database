@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AppBootstrapController;
+use App\Http\Controllers\Api\SegmentController;
 use App\Http\Controllers\Api\V1\AppointmentController;
 use App\Http\Controllers\Api\V1\AuditLogController;
 use App\Http\Controllers\Api\V1\BranchController;
@@ -46,10 +48,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('web')->group(function () {
+    Route::get('/segments', [SegmentController::class, 'index'])->name('api.segments.index');
     Route::post('/auth/login', [AuthController::class, 'login'])->name('api.auth.login');
     Route::post('/auth/register', [AuthController::class, 'register'])->name('api.auth.register');
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/app/bootstrap', AppBootstrapController::class)->name('api.app.bootstrap');
         Route::get('/auth/me', [AuthController::class, 'me'])->name('api.auth.me');
         Route::post('/auth/logout', [AuthController::class, 'logout'])->name('api.auth.logout');
     });
@@ -79,30 +83,28 @@ Route::middleware(['auth:sanctum', 'tenant'])
     ->prefix('clinic/v1')
     ->name('api.clinic.v1.')
     ->group(function () {
-        Route::apiResources([
-            'appointments' => AppointmentController::class,
-            'branches' => BranchController::class,
-            'brands' => BrandController::class,
-            'clients' => ClientController::class,
-            'communication-messages' => CommunicationMessageController::class,
-            'documents' => DocumentController::class,
-            'financial-accounts' => FinancialAccountController::class,
-            'financial-transactions' => FinancialTransactionController::class,
-            'hospitalizations' => HospitalizationController::class,
-            'inventory-locations' => InventoryLocationController::class,
-            'inventory-movements' => InventoryMovementController::class,
-            'medical-record-entries' => MedicalRecordEntryController::class,
-            'medical-records' => MedicalRecordController::class,
-            'pet-vaccines' => PetVaccineController::class,
-            'pets' => PetController::class,
-            'posts' => PostController::class,
-            'price-table-items' => PriceTableItemController::class,
-            'price-tables' => PriceTableController::class,
-            'products' => ProductController::class,
-            'services' => ServiceController::class,
-            'suppliers' => SupplierController::class,
-            'vaccines' => VaccineController::class,
-        ]);
+        Route::apiResource('appointments', AppointmentController::class)->middleware('module:core.agenda');
+        Route::apiResource('branches', BranchController::class)->middleware('module:core.users');
+        Route::apiResource('brands', BrandController::class)->middleware('module:core.finance');
+        Route::apiResource('clients', ClientController::class)->middleware('module:core.clients');
+        Route::apiResource('communication-messages', CommunicationMessageController::class)->middleware('module:core.documents');
+        Route::apiResource('documents', DocumentController::class)->middleware('module:core.documents');
+        Route::apiResource('financial-accounts', FinancialAccountController::class)->middleware('module:core.finance');
+        Route::apiResource('financial-transactions', FinancialTransactionController::class)->middleware('module:core.finance');
+        Route::apiResource('hospitalizations', HospitalizationController::class)->middleware('module:veterinary.hospitalization');
+        Route::apiResource('inventory-locations', InventoryLocationController::class)->middleware('module:core.finance');
+        Route::apiResource('inventory-movements', InventoryMovementController::class)->middleware('module:core.finance');
+        Route::apiResource('medical-record-entries', MedicalRecordEntryController::class)->middleware('module:veterinary.medical-records,psychology.clinical-records');
+        Route::apiResource('medical-records', MedicalRecordController::class)->middleware('module:veterinary.medical-records,psychology.clinical-records');
+        Route::apiResource('pet-vaccines', PetVaccineController::class)->middleware('module:veterinary.vaccines');
+        Route::apiResource('pets', PetController::class)->middleware('module:veterinary.pets');
+        Route::apiResource('posts', PostController::class)->middleware('module:core.documents');
+        Route::apiResource('price-table-items', PriceTableItemController::class)->middleware('module:core.finance');
+        Route::apiResource('price-tables', PriceTableController::class)->middleware('module:core.finance');
+        Route::apiResource('products', ProductController::class)->middleware('module:core.finance');
+        Route::apiResource('services', ServiceController::class)->middleware('module:core.finance');
+        Route::apiResource('suppliers', SupplierController::class)->middleware('module:core.finance');
+        Route::apiResource('vaccines', VaccineController::class)->middleware('module:veterinary.vaccines');
     });
 
 Route::prefix('portal/v1')

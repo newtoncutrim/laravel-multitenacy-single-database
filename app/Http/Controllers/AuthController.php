@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tenant;
+use App\Models\Segment;
+use App\Services\TenantProvisioningService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,15 +47,24 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'tenant_name' => ['required', 'string', 'max:255', 'unique:tenants,name'],
+            'segment_slug' => ['nullable', 'string', 'exists:segments,slug'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
         $user = DB::transaction(function () use ($data) {
+            $segment = Segment::query()
+                ->where('slug', $data['segment_slug'] ?? 'veterinary')
+                ->where('active', true)
+                ->first();
+
             $tenant = Tenant::create([
+                'segment_id' => $segment?->id,
                 'name' => $data['tenant_name'],
             ]);
+
+            app(TenantProvisioningService::class)->provision($tenant, $segment);
 
             return $tenant->users()->create([
                 'name' => $data['name'],

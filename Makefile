@@ -3,13 +3,22 @@ APP_SERVICE ?= app
 DB_SERVICE ?= db
 NODE ?= npm
 FRONTEND_DIR ?= frontend
+DB_DOCS_DIR ?= docs/database
+DB_DOCS_IMAGE ?= schemaspy/schemaspy:latest
+DB_DOCS_NETWORK ?= laravel-multitenacy-single-database_laravel
+DB_DOCS_HOST ?= db
+DB_DOCS_PORT ?= 3306
+DB_DOCS_DATABASE ?= laravel
+DB_DOCS_USER ?= laravel
+DB_DOCS_PASSWORD ?= secret
+DB_DOCS_SCHEMA ?= laravel
 
 APP_EXEC = $(COMPOSE) exec -T $(APP_SERVICE)
 DB_EXEC = $(COMPOSE) exec -T $(DB_SERVICE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format stan cs-fixer cs-check cs-fix security-audit xdebug-info assets frontend-install frontend-dev frontend-build frontend-lint backend-assets ci route-list observability-up observability-down db-shell
+.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format stan cs-fixer cs-check cs-fix security-audit xdebug-info assets frontend-install frontend-dev frontend-build frontend-lint backend-assets db-docs db-docs-clean ci route-list observability-up observability-down db-shell
 
 help: ## Lista os comandos disponiveis.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nComandos disponiveis:\n"} /^[a-zA-Z0-9_-]+:.*##/ {printf "  make %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -50,6 +59,24 @@ shell: ## Abre um shell dentro do container da aplicacao.
 
 db-shell: ## Abre o cliente MySQL no container do banco.
 	$(DB_EXEC) mysql -ularavel -psecret laravel
+
+db-docs: ## Gera documentacao HTML do banco com SchemaSpy em docs/database.
+	@mkdir -p $(DB_DOCS_DIR)
+	docker run --rm \
+		--network $(DB_DOCS_NETWORK) \
+		-v "$(CURDIR)/$(DB_DOCS_DIR):/output" \
+		$(DB_DOCS_IMAGE) \
+		-t mysql \
+		-host $(DB_DOCS_HOST) \
+		-port $(DB_DOCS_PORT) \
+		-db $(DB_DOCS_DATABASE) \
+		-u $(DB_DOCS_USER) \
+		-p $(DB_DOCS_PASSWORD) \
+		-s $(DB_DOCS_SCHEMA)
+	@printf "\nDocumentacao do banco gerada em $(DB_DOCS_DIR)/index.html\n"
+
+db-docs-clean: ## Remove a documentacao HTML gerada do banco.
+	rm -rf $(DB_DOCS_DIR)
 
 composer-install: ## Instala dependencias PHP dentro do container.
 	$(APP_EXEC) composer install --no-interaction --prefer-dist --optimize-autoloader

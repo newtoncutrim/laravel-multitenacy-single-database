@@ -26,6 +26,55 @@ export type PaginatedResponse<T = Record<string, unknown>> = {
   total: number;
 };
 
+export type SegmentOption = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+};
+
+export type AppModule = {
+  key: string;
+  name: string;
+  description: string | null;
+  scope: string;
+  category: string;
+  is_core: boolean;
+  api_prefix: string | null;
+  navigation_label: string | null;
+  navigation_path: string | null;
+  icon: string | null;
+  config: Record<string, unknown> | null;
+};
+
+export type AppNavigationItem = {
+  label: string;
+  path: string;
+  module: string;
+  icon: string | null;
+  api_prefix: string | null;
+  category: string;
+};
+
+export type AppBootstrap = {
+  user: AuthUser & {
+    permissions: string[];
+  };
+  tenant: AuthUser['tenant'] & {
+    slug?: string | null;
+    status?: string;
+    branding?: {
+      logo_path: string | null;
+      primary_color: string;
+      secondary_color: string;
+      accent_color: string;
+      custom_domain: string | null;
+    } | null;
+  };
+  modules: AppModule[];
+  navigation: AppNavigationItem[];
+};
+
 async function csrfCookie(): Promise<void> {
   await fetch(`${apiBaseUrl}/sanctum/csrf-cookie`, {
     credentials: 'include',
@@ -100,6 +149,18 @@ export async function registerTenant(payload: RegisterTenantPayload): Promise<Au
 
 export async function currentUser(): Promise<AuthUser> {
   const response = await request<ApiEnvelope<AuthUser>>('/api/auth/me');
+
+  return response.data;
+}
+
+export async function appBootstrap(): Promise<AppBootstrap> {
+  const response = await request<ApiEnvelope<AppBootstrap>>('/api/app/bootstrap');
+
+  return response.data;
+}
+
+export async function listSegments(): Promise<SegmentOption[]> {
+  const response = await request<ApiEnvelope<SegmentOption[]>>('/api/segments');
 
   return response.data;
 }

@@ -58,6 +58,7 @@ make restart     # reinicia os containers
 make logs        # acompanha logs
 make shell       # abre shell no container app
 make db-shell    # abre shell MySQL
+make db-docs     # gera documentacao HTML do banco com diagramas
 make frontend-dev # sobe o servico frontend
 ```
 
@@ -717,6 +718,9 @@ Observacao sobre versao: o container atual usa PHP 8.1, entao o projeto usa Lara
 - [`docs/user-onboarding-and-areas.md`](docs/user-onboarding-and-areas.md): como cadastrar e usar superadmin, suporte, clinica e cliente final.
 - [`docs/frontend-api-contract.md`](docs/frontend-api-contract.md): como o frontend autentica e chama APIs por tipo de usuario.
 - [`docs/architecture-veterinary-saas.md`](docs/architecture-veterinary-saas.md): arquitetura modular do SaaS veterinario.
+- [`docs/multi-tenant-modular-architecture.md`](docs/multi-tenant-modular-architecture.md): arquitetura escalavel por segmentos, modulos, tenant settings, branding e bootstrap da SPA.
+- [`docs/database-schema.md`](docs/database-schema.md): como gerar e abrir a documentacao HTML do banco.
+- [`docs/database/index.html`](docs/database/index.html): documentacao navegavel do banco gerada com SchemaSpy, incluindo tabelas, colunas, constraints e diagramas ER.
 
 ## Fluxo Recomendado Para Desenvolvimento
 

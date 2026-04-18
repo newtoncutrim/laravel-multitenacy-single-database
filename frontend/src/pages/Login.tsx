@@ -1,7 +1,8 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Eye, EyeOff, Mail, MessageCircle } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { currentUser, login, registerTenant } from '../services/api';
+import { currentUser, listSegments, login, registerTenant } from '../services/api';
+import type { SegmentOption } from '../services/api';
 
 type AuthMode = 'login' | 'register';
 
@@ -12,6 +13,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [segments, setSegments] = useState<SegmentOption[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +25,12 @@ function Login() {
       .then((user) => navigate(user.home_path || '/dashboard'))
       .catch(() => undefined);
   }, [navigate]);
+
+  useEffect(() => {
+    listSegments()
+      .then(setSegments)
+      .catch(() => setSegments([]));
+  }, []);
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -56,6 +64,7 @@ function Login() {
     try {
       const authUser = await registerTenant({
         tenant_name: String(data.get('tenant_name')),
+        segment_slug: String(data.get('segment_slug') || 'veterinary'),
         name: String(data.get('name')),
         email: String(data.get('email')),
         password: String(data.get('password')),
@@ -158,7 +167,7 @@ function Login() {
         ) : (
           <form onSubmit={handleRegister} className="space-y-5">
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-foreground">Clinica</label>
+              <label className="mb-1.5 block text-sm font-semibold text-foreground">Empresa ou consultorio</label>
               <input
                 name="tenant_name"
                 type="text"
@@ -166,6 +175,31 @@ function Login() {
                 required
                 className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground outline-none transition-shadow placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
               />
+            </div>
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold text-foreground">Segmento de atuacao</label>
+              <select
+                name="segment_slug"
+                defaultValue="veterinary"
+                required
+                className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground outline-none transition-shadow focus:ring-2 focus:ring-ring"
+              >
+                {segments.length ? (
+                  segments.map((segment) => (
+                    <option key={segment.slug} value={segment.slug}>
+                      {segment.name}
+                    </option>
+                  ))
+                ) : (
+                  <>
+                    <option value="veterinary">Veterinaria</option>
+                    <option value="psychology">Psicologia</option>
+                  </>
+                )}
+              </select>
+              <p className="mt-1 text-xs text-muted-foreground">
+                O segmento define os modulos iniciais. Eles podem ser habilitados ou removidos por tenant depois.
+              </p>
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-foreground">Nome</label>

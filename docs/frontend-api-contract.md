@@ -124,19 +124,28 @@ Endpoint:
 POST /api/auth/register
 ```
 
-Esse endpoint cria um novo `Tenant` e o primeiro usuario administrativo da clinica.
+Esse endpoint cria um novo `Tenant`, provisiona os modulos padrao do segmento e cria o primeiro usuario administrativo do tenant.
 
 Payload:
 
 ```json
 {
   "tenant_name": "Clinica Central",
+  "segment_slug": "veterinary",
   "name": "Dra. Ana",
   "email": "ana@example.com",
   "password": "password",
   "password_confirmation": "password"
 }
 ```
+
+`segment_slug` define o segmento inicial do tenant. Segmentos disponiveis podem ser carregados em:
+
+```http
+GET /api/segments
+```
+
+Depois do cadastro, o backend habilita os modulos `core` e os modulos padrao do segmento.
 
 Resposta:
 
