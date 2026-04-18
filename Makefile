@@ -2,6 +2,7 @@ COMPOSE ?= docker compose
 APP_SERVICE ?= app
 DB_SERVICE ?= db
 NODE ?= npm
+PYTHON ?= python3
 FRONTEND_DIR ?= frontend
 DB_DOCS_DIR ?= docs/database
 DB_DOCS_IMAGE ?= schemaspy/schemaspy:latest
@@ -12,13 +13,15 @@ DB_DOCS_DATABASE ?= laravel
 DB_DOCS_USER ?= laravel
 DB_DOCS_PASSWORD ?= secret
 DB_DOCS_SCHEMA ?= laravel
+DB_DOCS_SERVE_HOST ?= 0.0.0.0
+DB_DOCS_SERVE_PORT ?= 8081
 
 APP_EXEC = $(COMPOSE) exec -T $(APP_SERVICE)
 DB_EXEC = $(COMPOSE) exec -T $(DB_SERVICE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format stan cs-fixer cs-check cs-fix security-audit xdebug-info assets frontend-install frontend-dev frontend-build frontend-lint backend-assets db-docs db-docs-clean ci route-list observability-up observability-down db-shell
+.PHONY: help env build up setup start stop down restart logs shell composer-install app-key migrate seed fresh storage-link cache-clear optimize-clear test test-filter quality format stan cs-fixer cs-check cs-fix security-audit xdebug-info assets frontend-install frontend-dev frontend-build frontend-lint backend-assets db-docs db-docs-serve db-docs-clean ci route-list observability-up observability-down db-shell
 
 help: ## Lista os comandos disponiveis.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nComandos disponiveis:\n"} /^[a-zA-Z0-9_-]+:.*##/ {printf "  make %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -74,6 +77,10 @@ db-docs: ## Gera documentacao HTML do banco com SchemaSpy em docs/database.
 		-p $(DB_DOCS_PASSWORD) \
 		-s $(DB_DOCS_SCHEMA)
 	@printf "\nDocumentacao do banco gerada em $(DB_DOCS_DIR)/index.html\n"
+
+db-docs-serve: ## Sobe servidor local para ver os diagramas do banco.
+	@printf "SchemaSpy: http://localhost:$(DB_DOCS_SERVE_PORT)/relationships.html\n"
+	$(PYTHON) -m http.server $(DB_DOCS_SERVE_PORT) -b $(DB_DOCS_SERVE_HOST) -d $(DB_DOCS_DIR)
 
 db-docs-clean: ## Remove a documentacao HTML gerada do banco.
 	rm -rf $(DB_DOCS_DIR)
