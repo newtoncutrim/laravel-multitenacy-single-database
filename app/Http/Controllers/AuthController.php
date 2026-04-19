@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tenant;
 use App\Models\Segment;
+use App\Models\Tenant;
 use App\Services\TenantProvisioningService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
